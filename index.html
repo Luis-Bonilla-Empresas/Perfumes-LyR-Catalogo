@@ -723,6 +723,55 @@ body.skin-navidad .card{border-color:#1b5e20}
   #obsModalActions button{min-height:44px;touch-action:manipulation;}
 }
 @media (min-width:601px){#obsModal > div{max-height:calc(100dvh - 40px) !important;}}
+
+/* ===== Temas UI catálogo ===== */
+body[data-theme="glass"]{background:radial-gradient(ellipse at 30% 0%,rgba(0,180,255,.2),transparent 50%),#070e18!important}
+body[data-theme="glass"] .product-card,body[data-theme="glass"] .tool-item,body[data-theme="glass"] .cart-item,body[data-theme="glass"] header,body[data-theme="glass"] nav,body[data-theme="glass"] .admin-panel,body[data-theme="glass"] .admin-login{
+  background:rgba(20,35,55,.45)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.12)!important;box-shadow:0 8px 28px rgba(0,0,0,.35)!important
+}
+body[data-theme="neuro"]{background:#1a1f26!important}
+body[data-theme="neuro"] .product-card,body[data-theme="neuro"] .tool-item,body[data-theme="neuro"] .cart-item{
+  background:#1a1f26!important;border:none!important;border-radius:18px!important;
+  box-shadow:8px 8px 16px #0d1014,-6px -6px 12px #272e38!important
+}
+body[data-theme="clay"]{background:#120e1a!important}
+body[data-theme="clay"] .product-card,body[data-theme="clay"] .tool-item,body[data-theme="clay"] .cart-item{
+  border:none!important;border-radius:26px!important;
+  background:linear-gradient(160deg,#2a3348,#151a28)!important;
+  box-shadow:0 12px 26px rgba(0,0,0,.45),inset 0 2px 0 rgba(255,255,255,.07)!important
+}
+body[data-theme="flat"]{background:#0a0e14!important}
+body[data-theme="flat"] .product-card,body[data-theme="flat"] .tool-item,body[data-theme="flat"] .cart-item,body[data-theme="flat"] header,body[data-theme="flat"] nav{
+  box-shadow:none!important;border-radius:4px!important;border:2px solid #3a4555!important
+}
+body[data-theme="material"]{background:#10151c!important}
+body[data-theme="material"] .product-card,body[data-theme="material"] .tool-item,body[data-theme="material"] .cart-item{
+  border:none!important;border-radius:14px!important;
+  box-shadow:0 2px 4px rgba(0,0,0,.35),0 10px 28px rgba(0,0,0,.35)!important
+}
+body[data-theme="skeuo"]{background:#0a0d12!important}
+body[data-theme="skeuo"] .product-card,body[data-theme="skeuo"] .tool-item,body[data-theme="skeuo"] .cart-item{
+  background:linear-gradient(185deg,#2c3c50,#121a24)!important;
+  border:1px solid #4a5d72!important;
+  box-shadow:0 5px 0 #06080c,0 10px 22px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.15)!important
+}
+body[data-theme="brutal"]{background:#050505!important}
+body[data-theme="brutal"] .product-card,body[data-theme="brutal"] .tool-item,body[data-theme="brutal"] .cart-item,body[data-theme="brutal"] .admin-login{
+  border:3px solid #fff!important;border-radius:0!important;box-shadow:6px 6px 0 #ffe600!important;background:#0d0d0d!important
+}
+body[data-theme="brutal"] header,body[data-theme="brutal"] nav{border-color:#fff!important;border-width:0 0 3px!important;border-style:solid!important}
+body[data-theme="bento"]{background:#080c12!important}
+body[data-theme="bento"] .product-card,body[data-theme="bento"] .tool-item,body[data-theme="bento"] .cart-item{
+  border-radius:22px!important;border:1px solid rgba(255,255,255,.08)!important;
+  background:linear-gradient(160deg,#1a2434,#121a26)!important;box-shadow:none!important
+}
+.theme-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.theme-opt{text-align:left;padding:10px;border-radius:12px;border:2px solid #333;background:#1a1a1a;color:#eee;font-size:12px;cursor:pointer;min-height:64px}
+.theme-opt strong{display:block;margin-bottom:3px;font-size:13px}
+.theme-opt span{color:#999;font-size:11px}
+.theme-opt.active{border-color:var(--gold,#00b4ff);box-shadow:0 0 12px rgba(0,180,255,.35)}
+
 </style>
 </head>
 <body>
@@ -846,6 +895,31 @@ body.skin-navidad .card{border-color:#1b5e20}
     <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Toca cada título para abrir o cerrar el apartado.</p>
 
     <!-- 0. Firebase nube -->
+    
+    <div class="tool-item" id="admThemes">
+      <button type="button" class="tool-item-head" onclick="toggleAdminTool('admThemes')">
+        <span>🎨 Temas de interfaz
+          <small>Default · Glass · Neuro · Clay · Flat · Material · Skeuo · Brutal · Bento</small>
+        </span>
+        <span class="chev">›</span>
+      </button>
+      <div class="tool-item-body">
+        <p style="font-size:12px;color:var(--muted);margin:0 0 8px">Cambia el estilo visual del catálogo. Se guarda en este dispositivo.</p>
+        <div class="theme-grid" id="themeGrid">
+          <button type="button" class="theme-opt" data-theme="default"><strong>Default</strong><span>Tema actual</span></button>
+          <button type="button" class="theme-opt" data-theme="glass"><strong>Glassmorphism</strong><span>Vidrio / blur</span></button>
+          <button type="button" class="theme-opt" data-theme="neuro"><strong>Neumorphism</strong><span>Relieve suave</span></button>
+          <button type="button" class="theme-opt" data-theme="clay"><strong>Claymorphism</strong><span>Arcilla suave</span></button>
+          <button type="button" class="theme-opt" data-theme="flat"><strong>Flat Design</strong><span>Plano</span></button>
+          <button type="button" class="theme-opt" data-theme="material"><strong>Material</strong><span>Elevación</span></button>
+          <button type="button" class="theme-opt" data-theme="skeuo"><strong>Skeuomorphism</strong><span>Realista</span></button>
+          <button type="button" class="theme-opt" data-theme="brutal"><strong>Neobrutalism</strong><span>Bordes duros</span></button>
+          <button type="button" class="theme-opt" data-theme="bento"><strong>Bento UI</strong><span>Bloques</span></button>
+        </div>
+        <p class="hint" id="themeHint" style="margin-top:8px;font-size:12px;color:var(--muted)">Tema activo: Default</p>
+      </div>
+    </div>
+
     <div class="tool-item" id="admCloud">
       <button type="button" class="tool-item-head" onclick="toggleAdminTool('admCloud')">
         <span>☁️ Firebase (nube) y sus herramientas
@@ -4051,5 +4125,41 @@ if ('serviceWorker' in navigator) {
 })();
 </script>
 
+<script>
+
+/* Temas catálogo */
+var CAT_THEMES = {default:'Default',glass:'Glassmorphism',neuro:'Neumorphism',clay:'Claymorphism',flat:'Flat Design',material:'Material Design',skeuo:'Skeuomorphism',brutal:'Neobrutalism',bento:'Bento UI'};
+function getCatTheme(){
+  try{ var t=localStorage.getItem('uiTheme')||'default'; return CAT_THEMES[t]?t:'default'; }catch(e){ return 'default'; }
+}
+function applyCatTheme(name){
+  if(!name||!CAT_THEMES[name]) name='default';
+  try{ localStorage.setItem('uiTheme', name); }catch(e){}
+  if(name==='default') document.body.removeAttribute('data-theme');
+  else document.body.setAttribute('data-theme', name);
+  try{
+    document.querySelectorAll('#themeGrid .theme-opt').forEach(function(b){
+      b.classList.toggle('active', b.getAttribute('data-theme')===name);
+    });
+    var h=document.getElementById('themeHint');
+    if(h) h.textContent='Tema activo: '+CAT_THEMES[name];
+  }catch(e2){}
+}
+function bindCatThemes(){
+  var grid=document.getElementById('themeGrid');
+  if(!grid||grid._bound) return;
+  grid._bound=true;
+  grid.addEventListener('click', function(ev){
+    var btn=ev.target.closest?ev.target.closest('.theme-opt'):null;
+    if(!btn) return;
+    applyCatTheme(btn.getAttribute('data-theme')||'default');
+    if(typeof toast==='function') toast('Tema: '+CAT_THEMES[btn.getAttribute('data-theme')] );
+  });
+}
+document.addEventListener('DOMContentLoaded', function(){
+  try{ bindCatThemes(); applyCatTheme(getCatTheme()); }catch(e){}
+});
+
+</script>
 </body>
 </html>
