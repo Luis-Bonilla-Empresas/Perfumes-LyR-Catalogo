@@ -349,6 +349,7 @@ input,select,textarea{width:100%;background:var(--card);border:1px solid #333;co
   display:none;align-items:center;justify-content:center;
   padding:16px;
   animation:welcomeFadeIn .35s ease;
+  cursor:pointer;
 }
 .welcome-layer.show{display:flex;animation:welcomeFadeIn .35s ease}
 .welcome-layer.hidden{display:none !important}
@@ -371,6 +372,7 @@ input,select,textarea{width:100%;background:var(--card);border:1px solid #333;co
   box-shadow:0 12px 40px rgba(0,0,0,.55);
   border:1px solid #c9a22755;
   animation:welcomePop .4s cubic-bezier(.2,.9,.3,1.2);
+  cursor:pointer;
 }
 @keyframes welcomePop{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:none}}
 .welcome-card img{width:100%;display:block;vertical-align:middle}
@@ -885,7 +887,7 @@ body[data-theme="bento"] .product-card,body[data-theme="bento"] .tool-item,body[
       <h2>🧴 PERFUMES L&R</h2>
       <p><strong style="color:#c9a227">SOMOS FABRICANTES, PRECIOS AL MAYOR O DETAL</strong></p>
       <p>PRECIOS, PARA NUESTROS VERDADEROS EMPRENDEDORES <br>BUENOS LOTES VARIADOS DE PERFUMES CALIDAD 1.1<br>RECIBE LO MEJOR, EMPRENDE CON NOSOTROS, NO ESTÁS SOLO.</p>
-      <p style="margin-top:12px;font-size:12px;color:#666">Toca la × pa’ ver el catálogo</p>
+      <p style="margin-top:12px;font-size:12px;color:#666">Toca en cualquier lugar para ver el catálogo</p>
     </div>
   </div>
 </div>
@@ -3307,9 +3309,10 @@ function toast(msg) {
 
 
 function closeWelcome(e) {
-  if (e) { e.preventDefault(); e.stopPropagation(); }
+  if (e) { try { e.preventDefault(); e.stopPropagation(); } catch (err0) {} }
   var el = document.getElementById("welcomeLayer");
   if (!el) return;
+  if (el.classList.contains("hidden") || el.classList.contains("hide")) return;
   el.classList.add("hide");
   el.classList.remove("show");
   try { sessionStorage.setItem("lr_welcome_seen", "1"); } catch (err) {}
@@ -3326,8 +3329,14 @@ document.addEventListener("DOMContentLoaded", function() {
     el.style.display = "none";
     el.classList.remove("show");
     el.addEventListener("click", function(ev) {
-      if (ev.target === el) closeWelcome(ev);
+      closeWelcome(ev);
     });
+    el.addEventListener("touchend", function(ev) {
+      /* un toque en cualquier zona cierra (evita doble con click en algunos móviles) */
+      if (ev.target && (ev.target.closest && ev.target.closest(".welcome-layer"))) {
+        closeWelcome(ev);
+      }
+    }, { passive: false });
   }
   var logo = document.getElementById("logoTap");
   if (logo) {
