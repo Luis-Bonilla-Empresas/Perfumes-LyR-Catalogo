@@ -186,20 +186,24 @@ h2{color:var(--gold);font-size:18px;margin-bottom:12px;border-bottom:1px solid #
 .btns .btn-pedir,.btns .disabled-agotado{
   flex:1;min-width:0;height:28px!important;min-height:28px!important;max-height:28px!important;
 }
+/* Misma cadencia que waPulse (1.2s): escala + color más vivo / más tenue */
 @keyframes pedirPulse{
-  0%,100%{transform:scale(1);box-shadow:0 1px 6px rgba(201,162,39,.35);filter:brightness(1)}
-  50%{transform:scale(1.04);box-shadow:0 3px 12px rgba(201,162,39,.7);filter:brightness(1.08)}
+  0%{transform:scale(1);box-shadow:0 2px 10px rgba(201,162,39,.4);background:#c9a227;filter:brightness(1)}
+  25%{transform:scale(1.06);box-shadow:0 6px 22px rgba(201,162,39,.8),0 0 0 4px rgba(201,162,39,.18);background:#e8c84a;filter:brightness(1.12)}
+  50%{transform:scale(0.97);box-shadow:0 2px 10px rgba(201,162,39,.45);background:#b8921f;filter:brightness(0.92)}
+  75%{transform:scale(1.08);box-shadow:0 8px 26px rgba(232,200,74,.9),0 0 0 5px rgba(201,162,39,.2);background:#f0d35c;filter:brightness(1.18)}
+  100%{transform:scale(1);box-shadow:0 2px 10px rgba(201,162,39,.4);background:#c9a227;filter:brightness(1)}
 }
 .btn-pedir{
   width:100%;border:none;padding:0 4px;border-radius:7px;
   font-size:10px;font-weight:800;line-height:1;
-  cursor:pointer;background:var(--gold);color:#000;
-  box-shadow:0 1px 6px rgba(201,162,39,.35);
-  animation:pedirPulse 1.5s ease-in-out infinite !important;
+  cursor:pointer;background:#c9a227;color:#000;
+  box-shadow:0 2px 10px rgba(201,162,39,.4);
+  animation:pedirPulse 1.2s ease-in-out infinite !important;
   display:flex;align-items:center;justify-content:center;gap:2px;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
-.btn-pedir:active{animation:none !important;transform:scale(.95) !important}
+.btn-pedir:active{animation:none !important;transform:scale(.95) !important;background:#c9a227 !important}
 .btns button.disabled-agotado{
   width:100%;border:none;padding:0 4px;border-radius:7px;
   font-size:10px;font-weight:700;line-height:1;
@@ -599,8 +603,9 @@ body[class*="skin-"] .btn-eye{flex:0 0 auto;width:auto!important;min-width:36px;
 .btns{display:flex;gap:5px;align-items:center;margin-top:6px}
 .btns .btn-pedir{flex:1;min-height:0}
 .btn-pedir{
-  background:#c9a227 !important;color:#000 !important;border-color:#c9a227 !important;
-  box-shadow:0 2px 10px rgba(201,162,39,.35) !important;
+  color:#000 !important;border-color:#c9a227 !important;
+  /* background lo anima pedirPulse — no fijar !important */
+  animation:pedirPulse 1.2s ease-in-out infinite !important;
 }
 body[class*="skin-"] .filters button.active{
   background:#c9a227 !important;color:#000 !important;border-color:#c9a227 !important;
@@ -758,7 +763,9 @@ body.skin-navidad .card{border-color:#1b5e20}
 .btns{height:28px!important;min-height:28px!important;max-height:28px!important;margin-top:auto!important}
 .btns .btn-pedir,.btns .disabled-agotado{flex:1!important;min-height:28px!important;height:28px!important;max-height:28px!important;padding:0 4px!important;font-size:10px!important}
 .btn-eye{height:28px!important;min-height:28px!important}
-.btn-pedir{animation:pedirPulse 1.5s ease-in-out infinite !important}
+.btn-pedir{animation:pedirPulse 1.2s ease-in-out infinite !important;background:#c9a227}
+/* en modal detalle también late el color */
+#obsModalActions .btn-pedir{animation:pedirPulse 1.2s ease-in-out infinite !important;min-height:48px;height:48px;font-size:15px}
 .card-title{font-size:9px!important}
 .sizes-hint{font-size:7px!important}
 
@@ -2032,7 +2039,7 @@ function viewPerfumeObs(id) {
   var canAdd = !p.agotado;
   acts.innerHTML =
     (canAdd ? '<button type="button" class="btn-pedir" style="flex:1;min-height:48px;height:48px;font-size:15px;border-radius:10px" onclick="document.getElementById(\'obsModal\').style.display=\'none\';openAddModal(\'' + String(p.id).replace(/'/g, '') + '\')">🛒 Agregar</button>' : '') +
-    '<button type="button" style="flex:1;min-height:48px;height:48px;padding:0 12px;border:0;border-radius:10px;background:#c0392b;color:#fff;font-weight:800;font-size:15px" onclick="document.getElementById(\'obsModal\').style.display=\'none\';try{if(history.state&&history.state.lrModal)history.back()}catch(e){}">❌ Cerrar</button>';
+    '<button type="button" style="flex:1;min-height:48px;height:48px;padding:0 12px;border:0;border-radius:10px;background:#c0392b;color:#fff;font-weight:800;font-size:15px" onclick="document.getElementById(\'obsModal\').style.display=\'none\';">❌ Cerrar</button>';
   if (typeof window.__lrPushModal === "function") window.__lrPushModal("obs");
   m.style.display = "flex";
 }
@@ -2156,7 +2163,7 @@ function pickSizeAndAdd(size) {
 function closeModal() {
   document.getElementById("addModal").classList.remove("show");
   pendingProductId = null;
-  try { if (history.state && history.state.lrModal) history.back(); } catch (e) {}
+  /* no history.back aquí: el popstate solo lo usa el gesto del sistema */
 }
 function selectSize(size) {
   selectedSize = size;
@@ -4150,22 +4157,30 @@ function roundRect(ctx, x, y, w, h, r) {
   };
   window.addEventListener('popstate', function(ev){
     if (closeTopModal()) {
-      /* consumimos el atrás: no salimos de la PWA */
+      /* atrás con modal abierto: solo cierra modal */
       return;
     }
-    /* sin modal: empujar de nuevo estado para no salir de la app instalada */
+    /* sin modal: NO salir del catálogo — re-inyecta historial */
     try {
-      if (window.matchMedia('(display-mode: standalone)').matches ||
-          window.matchMedia('(display-mode: fullscreen)').matches ||
-          window.navigator.standalone) {
-        history.pushState({ lrRoot: 1 }, '');
-      }
+      history.pushState({ lrRoot: 1 }, '');
     } catch (e2) {}
   });
-  /* estado raíz al cargar */
+  /* estado raíz al cargar + refuerzo */
   try { history.replaceState({ lrRoot: 1 }, ''); } catch (e3) {}
+  try { history.pushState({ lrRoot: 1 }, ''); } catch (e4) {}
   document.addEventListener('DOMContentLoaded', function(){
-    try { if (!history.state || !history.state.lrRoot) history.replaceState({ lrRoot: 1 }, ''); } catch (e) {}
+    try {
+      history.replaceState({ lrRoot: 1 }, '');
+      history.pushState({ lrRoot: 1 }, '');
+    } catch (e) {}
+  });
+  /* si la pestaña vuelve a verse, asegurar trampa */
+  document.addEventListener('visibilitychange', function(){
+    if (document.visibilityState === 'visible') {
+      try {
+        if (!history.state || !history.state.lrRoot) history.pushState({ lrRoot: 1 }, '');
+      } catch (e) {}
+    }
   });
 })();
 
