@@ -186,13 +186,12 @@ h2{color:var(--gold);font-size:18px;margin-bottom:12px;border-bottom:1px solid #
 .btns .btn-pedir,.btns .disabled-agotado{
   flex:1;min-width:0;height:28px!important;min-height:28px!important;max-height:28px!important;
 }
-/* Misma cadencia que waPulse (1.2s): escala + color más vivo / más tenue */
+/* Pulso de los botones Agregar: conserva movimiento y resplandor, sin variar el color */
 @keyframes pedirPulse{
-  0%{transform:scale(1);box-shadow:0 2px 10px rgba(201,162,39,.4);background:#c9a227;filter:brightness(1)}
-  25%{transform:scale(1.06);box-shadow:0 6px 22px rgba(201,162,39,.8),0 0 0 4px rgba(201,162,39,.18);background:#e8c84a;filter:brightness(1.12)}
-  50%{transform:scale(0.97);box-shadow:0 2px 10px rgba(201,162,39,.45);background:#b8921f;filter:brightness(0.92)}
-  75%{transform:scale(1.08);box-shadow:0 8px 26px rgba(232,200,74,.9),0 0 0 5px rgba(201,162,39,.2);background:#f0d35c;filter:brightness(1.18)}
-  100%{transform:scale(1);box-shadow:0 2px 10px rgba(201,162,39,.4);background:#c9a227;filter:brightness(1)}
+  0%,100%{transform:scale(1);box-shadow:0 2px 10px rgba(201,162,39,.4)}
+  25%{transform:scale(1.06);box-shadow:0 6px 22px rgba(201,162,39,.8),0 0 0 4px rgba(201,162,39,.18)}
+  50%{transform:scale(0.97);box-shadow:0 2px 10px rgba(201,162,39,.45)}
+  75%{transform:scale(1.08);box-shadow:0 8px 26px rgba(232,200,74,.9),0 0 0 5px rgba(201,162,39,.2)}
 }
 .btn-pedir{
   width:100%;border:none;padding:0 4px;border-radius:7px;
