@@ -838,6 +838,10 @@ body[data-theme="bento"] .product-card,body[data-theme="bento"] .tool-item,body[
 #appSplash .sp-dots{position:absolute;inset:0;overflow:hidden;pointer-events:none;opacity:.35}
 #appSplash .sp-dots span{position:absolute;width:6px;height:6px;border-radius:50%;background:#c9a227;opacity:.5}
 @keyframes spIn{from{transform:scale(.86);opacity:0}to{transform:scale(1);opacity:1}}
+
+/* Mejor contraste en botones Agregar: conserva el fondo dorado */
+.btn-pedir{color:#fff!important}
+.btn-pedir .btn-cart-icon{display:inline-block;filter:grayscale(1) brightness(0) invert(1);}
 </style>
 <div id="appSplash" aria-hidden="true">
   <div class="sp-dots" id="spDots"></div>
@@ -2037,7 +2041,7 @@ function viewPerfumeObs(id) {
   var acts = document.getElementById("obsModalActions");
   var canAdd = !p.agotado;
   acts.innerHTML =
-    (canAdd ? '<button type="button" class="btn-pedir" style="flex:1;min-height:48px;height:48px;font-size:15px;border-radius:10px" onclick="document.getElementById(\'obsModal\').style.display=\'none\';openAddModal(\'' + String(p.id).replace(/'/g, '') + '\')">🛒 Agregar</button>' : '') +
+    (canAdd ? '<button type="button" class="btn-pedir" style="flex:1;min-height:48px;height:48px;font-size:15px;border-radius:10px" onclick="document.getElementById(\'obsModal\').style.display=\'none\';openAddModal(\'' + String(p.id).replace(/'/g, '') + '\')"><span class="btn-cart-icon">🛒</span> Agregar</button>' : '') +
     '<button type="button" style="flex:1;min-height:48px;height:48px;padding:0 12px;border:0;border-radius:10px;background:#c0392b;color:#fff;font-weight:800;font-size:15px" onclick="document.getElementById(\'obsModal\').style.display=\'none\';">❌ Cerrar</button>';
   if (typeof window.__lrPushModal === "function") window.__lrPushModal("obs");
   m.style.display = "flex";
@@ -2072,7 +2076,7 @@ function renderCatalog() {
     var safeGender = escapeHtml(p.gender || "");
     var btn = p.agotado
       ? '<button class="disabled-agotado" disabled>Agotado</button>'
-      : '<button type="button" class="btn-pedir" onclick="openAddModal(\'' + String(p.id).replace(/'/g, '') + '\', this)">🛒 Agregar</button>';
+      : '<button type="button" class="btn-pedir" onclick="openAddModal(\'' + String(p.id).replace(/'/g, '') + '\', this)"><span class="btn-cart-icon">🛒</span> Agregar</button>';
     var pid = String(p.id).replace(/'/g, '');
     return '<div class="card">' +
       '<div class="card-img-wrap" onclick="viewPerfumeObs(\'' + pid + '\')" title="Ver detalle">' +
